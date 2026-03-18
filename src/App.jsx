@@ -1,37 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import appLogo from '/favicon.svg'
-import PWABadge from './PWABadge.jsx'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Replace YOUR_API_KEY with a free key from cricapi.com
+    fetch('https://api.cricapi.com/v1/currentMatches?apikey=5bc61cdf-e3c9-4050-8d78-59ddfc84f848')
+      .then(res => res.json())
+      .then(result => {
+        if (result.data) {
+          setData(result.data);
+        } else {
+          // Fallback data if API key is missing
+          setData([
+            { name: "Chennai Super Kings vs Mumbai Indians", status: "CSK won by 7 wickets" },
+            { name: "Royal Challengers Bengaluru vs Kolkata Knight Riders", status: "Match starting soon" }
+          ]);
+        }
+      })
+      .catch(() => setData([]));
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={appLogo} className="logo" alt="FSD_LAB7 logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <h1>Live Cricket Updates</h1>
+      <div className="grid">
+        {data.map((item, index) => (
+          <div key={index} className="card">
+            <h3>{item.name}</h3>
+            <p>{item.status}</p>
+          </div>
+        ))}
       </div>
-      <h1>FSD_LAB7</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <PWABadge />
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
