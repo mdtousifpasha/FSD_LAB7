@@ -7,20 +7,26 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       manifest: {
         name: 'Cricket Updates',
         short_name: 'Cricket',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'https://www.google.com/s2/favicons?sz=192&domain=cricbuzz.com',
+            src: '/icon-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
-            src: 'https://www.google.com/s2/favicons?sz=512&domain=cricbuzz.com',
+            src: '/icon-512.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       }
